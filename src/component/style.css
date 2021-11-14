@@ -1,0 +1,38 @@
+
+  .rtp-wrapper-input{
+    width: 100%;
+  }
+.rtp-wrapper{
+    background: white;
+    border: 1px solid black;
+    display: grid;
+  grid-template-columns: auto auto auto;
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+} 
+.rtp-wrapper ul{
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .rtp-wrapper ul li{
+    padding: 4px;
+  }
+  .rtp-wrapper .rtp-hours {
+    display: block;
+    position: relative;
+    text-align: right;
+  }
+
+  .rtp-wrapper .rtp-mins {
+    display: block;
+    position: relative;
+    text-align: left;
+  }
+  .rtp-wrapper ul .selected-item{
+    background-color: blue;
+    color:white;
+  }
