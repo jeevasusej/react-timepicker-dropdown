@@ -100,7 +100,7 @@ export const ReactTimepickerDropdown = (props: Props) => {
           onItemClick={handleDropdownClick}
           value={displayValue}
           key={i + '' + hrValue}
-          displayValue={hrValue}
+          displayValue={hrValue + ' :'}
           isSelected={displayValue === inputValue}
         />
       );
