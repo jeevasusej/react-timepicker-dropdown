@@ -78,7 +78,8 @@ export const ReactTimepickerDropdown = (props: Props) => {
       mm = 0,
       formathrs = props.Use12Hours ? 12 : 24,
       ampm = '';
-    let pm12Found = false;
+    let pm12Found = false,
+      isSelected = false;
     //loop to increment the time and push results in array
     for (var i = 0; tt < 24 * 60; i++) {
       hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
@@ -100,16 +101,16 @@ export const ReactTimepickerDropdown = (props: Props) => {
       ).slice(-2);
       minValue = ('0' + mm).slice(-2) + ' ' + ampm;
       displayValue = hrValue + ':' + minValue;
+      isSelected =
+        (displayValue || '').trim().toUpperCase() ===
+        (inputValue || '').trim().toUpperCase();
       hours.push(
         <OnHoursClick
           onItemClick={handleDropdownClick}
           value={displayValue}
           key={i + '' + hrValue}
           displayValue={hrValue}
-          isSelected={
-            (displayValue || '').trim().toUpperCase() ===
-            (inputValue || '').trim().toUpperCase()
-          }
+          isSelected={isSelected}
           isHour={true}
         />
       );
@@ -119,10 +120,7 @@ export const ReactTimepickerDropdown = (props: Props) => {
           value={displayValue}
           key={i + '' + i + hrValue}
           displayValue={minValue}
-          isSelected={
-            (displayValue || '').trim().toUpperCase() ===
-            (inputValue || '').trim().toUpperCase()
-          }
+          isSelected={isSelected}
           isHour={false}
         />
       );
