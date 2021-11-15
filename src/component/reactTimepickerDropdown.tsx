@@ -100,8 +100,9 @@ export const ReactTimepickerDropdown = (props: Props) => {
           onItemClick={handleDropdownClick}
           value={displayValue}
           key={i + '' + hrValue}
-          displayValue={hrValue + ' :'}
+          displayValue={hrValue}
           isSelected={displayValue === inputValue}
+          isHour={true}
         />
       );
       mins.push(
@@ -111,13 +112,15 @@ export const ReactTimepickerDropdown = (props: Props) => {
           key={i + '' + i + hrValue}
           displayValue={minValue}
           isSelected={displayValue === inputValue}
+          isHour={false}
         />
       );
+
       tt = tt + props.Steps;
     }
     var dropdwon = [];
     dropdwon.push(getWrapper(hours, 'rtp-hours', 0));
-    dropdwon.push(getWrapper(mins, 'rtp-mins', 1));
+    dropdwon.push(getWrapper(mins, 'rtp-mins', 2));
     return dropdwon;
   };
 

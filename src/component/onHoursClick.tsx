@@ -6,6 +6,7 @@ interface DropdownProps {
   value: string;
   displayValue: string;
   isSelected: boolean;
+  isHour: boolean;
 }
 
 export const OnHoursClick = (props: DropdownProps) => {
@@ -33,6 +34,7 @@ export const OnHoursClick = (props: DropdownProps) => {
       }}
     >
       {props.displayValue}
+      {props.isHour && <span className={'colon'}>:</span>}
     </li>
   );
 };

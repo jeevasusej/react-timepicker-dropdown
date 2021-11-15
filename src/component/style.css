@@ -19,7 +19,10 @@
     list-style: none;
   }
   .rtp-wrapper ul li{
-    padding: 4px;
+    padding: 0;
+  }
+  .rtp-wrapper ul li .colon{
+    padding: 0 5px;
   }
   .rtp-wrapper .rtp-hours {
     display: block;
