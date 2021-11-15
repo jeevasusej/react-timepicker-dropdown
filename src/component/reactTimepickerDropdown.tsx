@@ -63,9 +63,7 @@ export const ReactTimepickerDropdown = (props: Props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     var value = e.target.value;
-    if (value) {
-      setInputValue(value);
-    }
+    setInputValue(value);
   };
   // stackoverflow.com/questions/36125038/generate-array-of-times-as-strings-for-every-x-minutes-in-javascript
   const get12HoursElement = () => {
@@ -80,16 +78,23 @@ export const ReactTimepickerDropdown = (props: Props) => {
       mm = 0,
       formathrs = props.Use12Hours ? 12 : 24,
       ampm = '';
-
+    let pm12Found = false;
     //loop to increment the time and push results in array
     for (var i = 0; tt < 24 * 60; i++) {
       hh = Math.floor(tt / 60); // getting hours of day in 0-24 format
       mm = tt % 60; // getting minutes of the hour in 0-55 format
+
       ampm = props.Use12Hours
-        ? hh % formathrs == 1
-          ? 'PM'
+        ? hh % formathrs == 0
+          ? pm12Found
+            ? 'PM'
+            : 'AM'
           : ap[Math.floor(hh / 12)]
         : '';
+
+      if (props.Use12Hours && hh == 11 && ampm === 'AM') {
+        pm12Found = true;
+      }
       hrValue = (
         '0' + (props.Use12Hours && hh % formathrs == 0 ? 12 : hh % formathrs)
       ).slice(-2);
@@ -101,7 +106,10 @@ export const ReactTimepickerDropdown = (props: Props) => {
           value={displayValue}
           key={i + '' + hrValue}
           displayValue={hrValue}
-          isSelected={displayValue === inputValue}
+          isSelected={
+            (displayValue || '').trim().toUpperCase() ===
+            (inputValue || '').trim().toUpperCase()
+          }
           isHour={true}
         />
       );
@@ -111,7 +119,10 @@ export const ReactTimepickerDropdown = (props: Props) => {
           value={displayValue}
           key={i + '' + i + hrValue}
           displayValue={minValue}
-          isSelected={displayValue === inputValue}
+          isSelected={
+            (displayValue || '').trim().toUpperCase() ===
+            (inputValue || '').trim().toUpperCase()
+          }
           isHour={false}
         />
       );
