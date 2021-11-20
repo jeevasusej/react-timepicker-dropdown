@@ -1,7 +1,8 @@
-import React, { ReactChild, useState } from 'react';
+import React, { ReactChild, useEffect, useRef, useState } from 'react';
 import { usePopper } from 'react-popper';
 import { OnHoursClick } from './onHoursClick';
 import './style.css';
+import { useDetectClickOutside } from './useDetectClickOutside';
 
 const defaultProps = {
   Use12Hours: false,
@@ -23,9 +24,10 @@ export interface Props {
 }
 
 export const ReactTimepickerDropdown = (props: Props) => {
+  const dropdwonRef = useRef(null);
   const [
-    referenceElement,
-    setReferenceElement,
+    inputReferenceElement,
+    setInputReferenceElement,
   ] = useState<HTMLInputElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
@@ -33,13 +35,35 @@ export const ReactTimepickerDropdown = (props: Props) => {
   const [visible, setVisibility] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    modifiers: [{ name: 'arrow', options: { element: arrowElement } }],
-  });
+  const { styles, attributes } = usePopper(
+    inputReferenceElement,
+    popperElement,
+    {
+      modifiers: [{ name: 'arrow', options: { element: arrowElement } }],
+    }
+  );
 
   const handleInputClick = () => {
     setVisibility(!visible);
   };
+
+  const hideOnOutsideClick = () => {
+    setVisibility(false);
+  };
+  const outsideDetectionRef = useDetectClickOutside({
+    onTriggered: hideOnOutsideClick,
+  });
+
+  useEffect(
+    function () {
+      debugger;
+      setPopperElement(dropdwonRef.current);
+      if (outsideDetectionRef) {
+        outsideDetectionRef.current = dropdwonRef.current;
+      }
+    },
+    [dropdwonRef.current]
+  );
 
   const handleDropdownClick = (value: string) => {
     setInputValue(value);
@@ -65,6 +89,7 @@ export const ReactTimepickerDropdown = (props: Props) => {
     var value = e.target.value;
     setInputValue(value);
   };
+
   // stackoverflow.com/questions/36125038/generate-array-of-times-as-strings-for-every-x-minutes-in-javascript
   const get12HoursElement = () => {
     var hours = [],
@@ -96,6 +121,7 @@ export const ReactTimepickerDropdown = (props: Props) => {
       if (props.Use12Hours && hh == 11 && ampm === 'AM') {
         pm12Found = true;
       }
+
       hrValue = (
         '0' + (props.Use12Hours && hh % formathrs == 0 ? 12 : hh % formathrs)
       ).slice(-2);
@@ -137,7 +163,7 @@ export const ReactTimepickerDropdown = (props: Props) => {
     <React.Fragment>
       <input
         type="text"
-        ref={setReferenceElement}
+        ref={setInputReferenceElement}
         onClick={handleInputClick}
         value={inputValue}
         className={'rtp-wrapper-input'}
@@ -145,7 +171,7 @@ export const ReactTimepickerDropdown = (props: Props) => {
       />
       {visible && (
         <div
-          ref={setPopperElement}
+          ref={dropdwonRef}
           style={styles.popper}
           {...attributes.popper}
           className={'rtp-wrapper'}
